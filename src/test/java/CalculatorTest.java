@@ -14,6 +14,6 @@ public class CalculatorTest {
     })
     void testAddWithAnotherInput(int a, int b, int expected) {
         Calculator calculator = new Calculator();
-        assertEquals(expected, calculator.add(a, b)); // expected to fail
+        assertEquals(expected, calculator.add(a, b)); // expected to pass
     }
 }

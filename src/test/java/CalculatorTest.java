@@ -24,4 +24,15 @@ public class CalculatorTest {
         Calculator calculator = new Calculator();
         assertEquals(5, calculator.subtract(10, 5)); // expected to fail, subtract not implemented yet
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "8, 4, 4",
+            "5, 2, 3",
+            "0, 0, 0"
+    })
+    void testSubtractWithVariousInputs(int a, int b, int expected) {
+        Calculator calculator = new Calculator();
+        assertEquals(expected, calculator.subtract(a, b));
+    }
 }

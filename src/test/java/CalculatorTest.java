@@ -59,4 +59,18 @@ public class CalculatorTest {
         Calculator calculator = new Calculator();
         assertEquals(4, calculator.divide(20, 5)); // failing test
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "200, 5, 40",
+            "32, 4, 8",
+            "-3, 3, -1",
+            "-49, -7, 7",
+            "0, 2, 0"
+    })
+    void testDivideWithVariousInputs(int a, int b, int expected) {
+        Calculator calculator = new Calculator();
+        assertEquals(expected, calculator.divide(a, b)); // parameterized test cases excluding throwing an error when dividing by zero
+    }
+
 }

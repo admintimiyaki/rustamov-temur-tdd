@@ -7,7 +7,7 @@ public class CalculatorTest {
     @Test
     void testAdd() {
         Calculator calculator = new Calculator();
-        assertEquals(9, calculator.add(2, 7)); // passing test
+        assertEquals(9, calculator.add(2, 7));
     }
 
     @ParameterizedTest
@@ -16,13 +16,13 @@ public class CalculatorTest {
     })
     void testAddWithAnotherInput(int a, int b, int expected) {
         Calculator calculator = new Calculator();
-        assertEquals(expected, calculator.add(a, b)); // passing test
+        assertEquals(expected, calculator.add(a, b));
     }
 
     @Test
     void testSubtract() {
         Calculator calculator = new Calculator();
-        assertEquals(5, calculator.subtract(10, 5)); // expected to fail, subtract not implemented yet
+        assertEquals(5, calculator.subtract(10, 5));
     }
 
     @ParameterizedTest
@@ -33,6 +33,6 @@ public class CalculatorTest {
     })
     void testSubtractWithVariousInputs(int a, int b, int expected) {
         Calculator calculator = new Calculator();
-        assertEquals(expected, calculator.subtract(a, b));
+        assertEquals(expected, calculator.subtract(a, b)); // passed test
     }
 }

@@ -33,6 +33,12 @@ public class CalculatorTest {
     })
     void testSubtractWithVariousInputs(int a, int b, int expected) {
         Calculator calculator = new Calculator();
-        assertEquals(expected, calculator.subtract(a, b)); // passed test
+        assertEquals(expected, calculator.subtract(a, b));
+    }
+
+    @Test
+    void testMultiply() {
+        Calculator calculator = new Calculator();
+        assertEquals(10, calculator.multiply(2, 5)); // failing test still I have not created such method yet
     }
 }

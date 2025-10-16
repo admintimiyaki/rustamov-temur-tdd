@@ -53,4 +53,10 @@ public class CalculatorTest {
         Calculator calculator = new Calculator();
         assertEquals(expected, calculator.multiply(a, b));
     }
+
+    @Test
+    void testDivide() {
+        Calculator calculator = new Calculator();
+        assertEquals(4, calculator.divide(20, 5)); // failing test
+    }
 }

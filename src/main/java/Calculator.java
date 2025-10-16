@@ -12,9 +12,9 @@ public class Calculator {
     }
 
     public int divide(int a, int b) {
-        return a / b; // implement minimal logic excluding dividing by zero
+        if (b == 0) {
+            throw new IllegalArgumentException("No division by zero!"); // implemented the logic correctly
+        }
+        return a / b;
     }
-
-
-
 }

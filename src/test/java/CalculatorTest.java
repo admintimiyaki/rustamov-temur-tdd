@@ -73,4 +73,10 @@ public class CalculatorTest {
         assertEquals(expected, calculator.divide(a, b)); // parameterized test cases excluding throwing an error when dividing by zero
     }
 
+    @Test
+    void testDivideByZeroThrowsException() {
+        Calculator calculator = new Calculator();
+        assertThrows(IllegalArgumentException.class, () -> {calculator.divide(11, 0);}); // failing test
+    }
+
 }

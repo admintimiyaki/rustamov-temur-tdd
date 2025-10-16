@@ -8,7 +8,7 @@ public class Calculator {
     }
 
     public int multiply(int a, int b) {
-        return 10; // will minimally pass
+        return a * b; // implemented correctly
     }
 
 

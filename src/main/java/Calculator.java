@@ -12,8 +12,9 @@ public class Calculator {
     }
 
     public int divide(int a, int b) {
-        return 4; // implementation minimal to pass only the first test 
+        return a / b; // implement minimal logic excluding dividing by zero
     }
+
 
 
 }

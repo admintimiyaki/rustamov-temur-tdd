@@ -39,6 +39,18 @@ public class CalculatorTest {
     @Test
     void testMultiply() {
         Calculator calculator = new Calculator();
-        assertEquals(10, calculator.multiply(2, 5)); // failing test still I have not created such method yet
+        assertEquals(10, calculator.multiply(2, 5));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "6, 6, 36",
+            "0, 0, 0",
+            "-2, 5, -10",
+            "-4, -4, 16"
+    })
+    void testMultiplyWithVariousInputs(int a, int b, int expected) {
+        Calculator calculator = new Calculator();
+        assertEquals(expected, calculator.multiply(a, b));
     }
 }

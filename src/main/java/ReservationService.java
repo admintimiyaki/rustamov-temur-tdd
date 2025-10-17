@@ -11,7 +11,10 @@ public class ReservationService {
     public void reserve(String userId, String bookId) {
         Book book = bookRepository.findById(bookId);
         if (book.getCopiesAvailable() <= 0) {
-            throw new IllegalStateException("No copies available");
+            throw new IllegalStateException("No copies!");
+        }
+        if (reservationRepository.existsByUserAndBook(userId, bookId)) {
+            throw new IllegalStateException("This is already reserved book");
         }
         Reservation reservation = new Reservation(userId, bookId);
         reservationRepository.save(reservation);
@@ -19,6 +22,7 @@ public class ReservationService {
         book.setCopiesAvailable(updatedCopies);
         bookRepository.save(book);
     }
+
 
 
 }

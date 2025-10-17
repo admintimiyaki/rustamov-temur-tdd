@@ -1,5 +1,5 @@
 import java.util.*;
-interface IBookRepository {
+public interface IBookRepository {
     Book findById(String id);
     void save(Book book);
     List<Book> findAll();

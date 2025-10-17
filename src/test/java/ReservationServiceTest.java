@@ -25,4 +25,17 @@ public class ReservationServiceTest {
         bookRepository.save(book);
         assertThrows(IllegalStateException.class, () -> {serviceReserve.reserve("u1", "bk2");});
     }
+
+    @Test
+    void noReserveSameBook() {
+        IBookRepository bookRepository = new MemoryBookRepository();
+        IReservationRepository reservationRepository = new MemoryReservationRepository();
+        ReservationService serviceReserve = new ReservationService(bookRepository, reservationRepository);
+        Book book = new Book("bk3", "Atomic Habits", 2);
+        bookRepository.save(book);
+        serviceReserve.reserve("u1", "bk3");
+        assertThrows(IllegalStateException.class, () -> {
+            serviceReserve.reserve("u1", "bk3");
+        });
+    }
 }

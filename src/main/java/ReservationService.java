@@ -10,11 +10,13 @@ public class ReservationService {
 
     public void reserve(String userId, String bookId) {
         Book book = bookRepository.findById(bookId);
-        if (book.getCopiesAvailable() == 0) {
-            throw new IllegalStateException("No copies available at the moment!");
+        if (book.getCopiesAvailable() <= 0) {
+            throw new IllegalStateException("No copies available");
         }
-        reservationRepository.save(new Reservation(userId, bookId));
-        book.setCopiesAvailable(book.getCopiesAvailable() - 1);
+        Reservation reservation = new Reservation(userId, bookId);
+        reservationRepository.save(reservation);
+        int updatedCopies = book.getCopiesAvailable() - 1;
+        book.setCopiesAvailable(updatedCopies);
         bookRepository.save(book);
     }
 

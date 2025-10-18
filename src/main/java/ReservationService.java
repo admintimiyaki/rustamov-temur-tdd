@@ -23,6 +23,14 @@ public class ReservationService {
         bookRepository.save(book);
     }
 
-
+    public void cancel(String userId, String bookId) {
+        if (!reservationRepository.existsByUserAndBook(userId, bookId)) {
+            throw new IllegalArgumentException("No such reservation!");
+        }
+        reservationRepository.delete(userId, bookId);
+        Book book = bookRepository.findById(bookId);
+        book.setCopiesAvailable(book.getCopiesAvailable() + 1);
+        bookRepository.save(book);
+    }
 
 }

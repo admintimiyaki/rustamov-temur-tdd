@@ -66,4 +66,23 @@ public class ReservationServiceTest {
         assertEquals(1, bookRepository.findById("bk5").getCopiesAvailable());
         assertFalse(reservationRepository.existsByUserAndBook("u1", "bk5"));
     }
+
+    @Test
+    void listAllReservations() {
+        IBookRepository bookRepository = new MemoryBookRepository();
+        IReservationRepository reservationRepository = new MemoryReservationRepository();
+        ReservationService service = new ReservationService(bookRepository, reservationRepository);
+        Book book1 = new Book("bk7", "The Witcher", 2);
+        Book book2 = new Book("bk8", "The Power of Now", 2);
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        service.reserve("u1", "bk7");
+        service.reserve("u1", "bk8");
+        var reservations = service.listReservations("u1");
+        assertEquals(2, reservations.size());
+        assertTrue(reservations.stream().anyMatch(r -> r.getBookId().equals("bk7")));
+        assertTrue(reservations.stream().anyMatch(r -> r.getBookId().equals("bk8")));
+
+    }
+
 }

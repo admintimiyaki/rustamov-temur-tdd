@@ -1,3 +1,4 @@
+import java.util.List;
 public class ReservationService {
 
     private final IBookRepository bookRepository;
@@ -32,5 +33,10 @@ public class ReservationService {
         book.setCopiesAvailable(book.getCopiesAvailable() + 1);
         bookRepository.save(book);
     }
+
+    public List<Reservation> listReservations(String userId) {
+        return reservationRepository.findByUser(userId);
+    }
+
 
 }

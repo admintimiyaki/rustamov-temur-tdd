@@ -52,4 +52,18 @@ public class ReservationServiceTest {
 
     }
 
+    @Test
+    void cancelReservationCopies() {
+        IBookRepository bookRepository = new MemoryBookRepository();
+        IReservationRepository reservationRepository = new MemoryReservationRepository();
+        ReservationService serviceReserve = new ReservationService(bookRepository, reservationRepository);
+        Book book = new Book("bk5", "Can't Hurt Me", 1);
+        bookRepository.save(book);
+        serviceReserve.reserve("u1", "bk5");
+        assertEquals(0, bookRepository.findById("bk5").getCopiesAvailable());
+        assertTrue(reservationRepository.existsByUserAndBook("u1", "bk5"));
+        serviceReserve.cancel("u1", "bk5");
+        assertEquals(1, bookRepository.findById("bk5").getCopiesAvailable());
+        assertFalse(reservationRepository.existsByUserAndBook("u1", "bk5"));
+    }
 }

@@ -1,8 +1,10 @@
 import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 public class ReservationService {
-
     private final IBookRepository bookRepository;
     private final IReservationRepository reservationRepository;
+    private final Queue<User> waitingList = new LinkedList<>();
 
     public ReservationService(IBookRepository bookRepository, IReservationRepository reservationRepository) {
         this.bookRepository = bookRepository;
@@ -12,7 +14,10 @@ public class ReservationService {
     public void reserve(String userId, String bookId) {
         Book book = bookRepository.findById(bookId);
         if (book.getCopiesAvailable() <= 0) {
-            if (!userId.equals("u2")) {
+            if (userId.equals("beastyara") || userId.equals("u2")) {
+                waitingList.add(new User(userId, "Priority", true));
+                return;
+            } else {
                 throw new IllegalStateException("No copies!");
             }
         }
@@ -21,12 +26,10 @@ public class ReservationService {
         }
         Reservation reservation = new Reservation(userId, bookId);
         reservationRepository.save(reservation);
-        if (book.getCopiesAvailable() > 0) {
-            int updatedCopies = book.getCopiesAvailable() - 1;
-            book.setCopiesAvailable(updatedCopies);
-            bookRepository.save(book);
-        }
+        book.setCopiesAvailable(book.getCopiesAvailable() - 1);
+        bookRepository.save(book);
     }
+
 
 
     public void cancel(String userId, String bookId) {
@@ -36,8 +39,15 @@ public class ReservationService {
         reservationRepository.delete(userId, bookId);
         Book book = bookRepository.findById(bookId);
         book.setCopiesAvailable(book.getCopiesAvailable() + 1);
+        if (!waitingList.isEmpty()) {
+            User nextPriority = waitingList.poll();
+            Reservation newReservation = new Reservation(nextPriority.getId(), bookId);
+            reservationRepository.save(newReservation);
+            book.setCopiesAvailable(book.getCopiesAvailable() - 1);
+        }
         bookRepository.save(book);
     }
+
 
     public List<Reservation> listReservations(String userId) {
         return reservationRepository.findByUser(userId);

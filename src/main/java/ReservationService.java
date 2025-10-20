@@ -13,26 +13,24 @@ public class ReservationService {
 
     public void reserve(String userId, String bookId) {
         Book book = bookRepository.findById(bookId);
+        if (book == null) {
+            throw new IllegalArgumentException("Book not found!");
+        }
         if (book.getCopiesAvailable() <= 0) {
-            if (userId.equals("beastyara") || userId.equals("u2")) {
-                waitingList.add(new User(userId, "Priority", true));
+            if (isPriorityUser(userId)) {
+                waitingList.add(new User(userId, "VIP", true));
                 return;
-            } else {
-                throw new IllegalStateException("No copies!");
             }
+            throw new IllegalStateException("No copies available!");
         }
         if (reservationRepository.existsByUserAndBook(userId, bookId)) {
-            throw new IllegalStateException("Reserved book!");
+            throw new IllegalStateException("Book already reserved!");
         }
-        Reservation reservation = new Reservation(userId, bookId);
-        reservationRepository.save(reservation);
-        book.setCopiesAvailable(book.getCopiesAvailable() - 1);
-        bookRepository.save(book);
+        saveReservation(userId, bookId, book);
     }
 
 
-
-    public void cancel(String userId, String bookId) {
+    public void cancel (String userId, String bookId) {
         if (!reservationRepository.existsByUserAndBook(userId, bookId)) {
             throw new IllegalArgumentException("No such reservation!");
         }
@@ -51,6 +49,19 @@ public class ReservationService {
 
     public List<Reservation> listReservations(String userId) {
         return reservationRepository.findByUser(userId);
+    }
+
+    private boolean isPriorityUser(String userId) {
+        return userId.equals("beastyara") || userId.equals("u2");
+    }
+
+    private void saveReservation(String userId, String bookId, Book book) {
+        Reservation reservation = new Reservation(userId, bookId);
+
+        reservationRepository.save(reservation);
+
+        book.setCopiesAvailable(book.getCopiesAvailable() - 1);
+        bookRepository.save(book);
     }
 
 

@@ -98,5 +98,23 @@ public class ReservationServiceTest {
         assertDoesNotThrow(() -> service.reserve(priorityUser.getId(), book.getId()));
     }
 
+    @Test
+    void priorityUserBookCopyAvailable() {
+        IBookRepository bookRepository = new MemoryBookRepository();
+        IReservationRepository reservationRepository = new MemoryReservationRepository();
+        ReservationService service = new ReservationService(bookRepository, reservationRepository);
+        Book book = new Book("bk11", "Crime and Punishment", 1);
+        bookRepository.save(book);
+        User normalUser = new User("u1", "Test", false);
+        service.reserve(normalUser.getId(), book.getId());
+        assertEquals(0, bookRepository.findById(book.getId()).getCopiesAvailable());
+        User priorityUser = new User("beastyara", "Peter", true);
+        service.reserve(priorityUser.getId(), book.getId());
+        service.cancel(normalUser.getId(), book.getId());
+        assertTrue(reservationRepository.existsByUserAndBook(priorityUser.getId(), book.getId()));
+    }
+
+
+
 
 }

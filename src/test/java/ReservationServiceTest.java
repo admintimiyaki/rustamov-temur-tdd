@@ -5,10 +5,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 public class ReservationServiceTest {
     @Test
     void reserveBookSuccessfully() {
+        Book book = new Book("bk1", "Harry Potter", 4);
         IBookRepository bookRepository = new MemoryBookRepository();
         IReservationRepository reservationRepository = new MemoryReservationRepository();
+
         ReservationService serviceReserve = new ReservationService(bookRepository, reservationRepository);
-        Book book = new Book("bk1", "Harry Potter", 4);
+
         bookRepository.save(book);
         serviceReserve.reserve("u1", "bk1");
 

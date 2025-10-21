@@ -22,10 +22,12 @@ public class ReservationServiceTest {
     void noReserveNoCopiesAvailable() {
         IBookRepository bookRepository = new MemoryBookRepository();
         IReservationRepository reservationRepository = new MemoryReservationRepository();
+        Book book = new Book("bk2", "Maugli", 0);
         ReservationService serviceReserve = new ReservationService(bookRepository, reservationRepository);
-        Book book = new Book("bk2", "Mowgli", 0);
+
         bookRepository.save(book);
-        assertThrows(IllegalStateException.class, () -> {serviceReserve.reserve("u1", "bk2");});
+
+        assertThrows(IllegalStateException.class, () -> serviceReserve.reserve("u1", "bk2"));
     }
 
     @Test

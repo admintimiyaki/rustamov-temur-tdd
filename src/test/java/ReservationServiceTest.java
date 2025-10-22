@@ -44,15 +44,16 @@ public class ReservationServiceTest {
 
     @Test
     void reserveLastCopy() {
+        Book book = new Book("bk4", "Meditaziya", 1);
         IBookRepository bookRepository = new MemoryBookRepository();
         IReservationRepository reservationRepository = new MemoryReservationRepository();
         ReservationService serviceReserve = new ReservationService(bookRepository, reservationRepository);
-        Book book = new Book("bk4", "Meditations", 1);
+
         bookRepository.save(book);
         serviceReserve.reserve("u1", "bk4");
+
         assertEquals(0, bookRepository.findById("bk4").getCopiesAvailable());
         assertTrue(reservationRepository.existsByUserAndBook("u1", "bk4"));
-
     }
 
     @Test

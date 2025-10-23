@@ -52,7 +52,11 @@ public class ReservationService {
     }
 
     private boolean isPriorityUser(String userId) {
-        return userId.equals("beastyara") || userId.equals("u2");
+        if (userId == null) {
+            return false;
+        }
+
+        return "u2".equals(userId) || "beastyara".equals(userId);
     }
 
     private void saveReservation(String userId, String bookId, Book book) {

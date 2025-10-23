@@ -16,6 +16,11 @@ public class ReservationService {
         if (book == null) {
             throw new IllegalArgumentException("Book not found!");
         }
+
+        if (reservationRepository.existsByUserAndBook(userId, bookId)) {
+            throw new IllegalStateException("Book already reserved!");
+        }
+
         if (book.getCopiesAvailable() <= 0) {
             if (isPriorityUser(userId)) {
                 waitingList.add(new User(userId, "VIP", true));
@@ -23,9 +28,7 @@ public class ReservationService {
             }
             throw new IllegalStateException("No copies available!");
         }
-        if (reservationRepository.existsByUserAndBook(userId, bookId)) {
-            throw new IllegalStateException("Book already reserved!");
-        }
+
         saveReservation(userId, bookId, book);
     }
 

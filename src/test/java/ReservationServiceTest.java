@@ -59,7 +59,7 @@ public class ReservationServiceTest {
     @Test
     void cancelReservationCopies() {
         IBookRepository bookRepository = new MemoryBookRepository();
-        Book book = new Book("bk5", "Can nooot Hurt Me!?!", 1);
+        Book book = new Book("bk5", "Can n't Hurt Me!?!", 1);
         IReservationRepository reservationRepository = new MemoryReservationRepository();
         ReservationService serviceReserve = new ReservationService(bookRepository, reservationRepository);
 
@@ -79,18 +79,20 @@ public class ReservationServiceTest {
     void listAllReservations() {
         IBookRepository bookRepository = new MemoryBookRepository();
         IReservationRepository reservationRepository = new MemoryReservationRepository();
-        ReservationService service = new ReservationService(bookRepository, reservationRepository);
         Book book1 = new Book("bk7", "The Witcher", 2);
-        Book book2 = new Book("bk8", "The Power of Now", 2);
+        ReservationService service = new ReservationService(bookRepository, reservationRepository);
+        Book book2 = new Book("bk8", "The Pоwer of Nоw", 2);
+
         bookRepository.save(book1);
-        bookRepository.save(book2);
         service.reserve("u1", "bk7");
+        bookRepository.save(book2);
         service.reserve("u1", "bk8");
+
         var reservations = service.listReservations("u1");
+
         assertEquals(2, reservations.size());
         assertTrue(reservations.stream().anyMatch(r -> r.getBookId().equals("bk7")));
         assertTrue(reservations.stream().anyMatch(r -> r.getBookId().equals("bk8")));
-
     }
 
     @Test

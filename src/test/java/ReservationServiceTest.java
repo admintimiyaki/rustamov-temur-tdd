@@ -98,14 +98,17 @@ public class ReservationServiceTest {
     @Test
     void priorityUserCanReserveEvenWhenNoCopiesAvailable() {
         IBookRepository bookRepository = new MemoryBookRepository();
+        Book book = new Book("bk10", "I am Zlatan Ibra", 0);
         IReservationRepository reservationRepository = new MemoryReservationRepository();
         ReservationService service = new ReservationService(bookRepository, reservationRepository);
-        Book book = new Book("bk10", "I am Zlatan Ibrahimovic", 0);
+
         bookRepository.save(book);
-        User normalUser = new User("u1", "Andrey", false);
-        User priorityUser = new User("u2", "Jasmine", true);
-        assertThrows(IllegalStateException.class, () -> service.reserve(normalUser.getId(), book.getId()));
-        assertDoesNotThrow(() -> service.reserve(priorityUser.getId(), book.getId()));
+
+        User normalUser = new User("u1", "Andrusha", false);
+        User priorityUser = new User("u2", "Jasminchik", true);
+
+        assertThrows(IllegalStateException.class, () -> service.reserve("u1", "bk10"));
+        assertDoesNotThrow(() -> service.reserve("u2", "bk10"));
     }
 
     @Test
